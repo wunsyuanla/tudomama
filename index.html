@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#1d9e75">
+<meta name="description" content="你的AI健康管理助理 - 4個月達成體脂目標">
+<title>健康管理助理</title>
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { 
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.container {
+  max-width: 400px;
+  background: white;
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+}
+h1 {
+  font-size: 24px;
+  color: #1d9e75;
+  margin-bottom: 10px;
+  text-align: center;
+}
+.subtitle {
+  text-align: center;
+  color: #666;
+  font-size: 14px;
+  margin-bottom: 30px;
+}
+.install-box {
+  background: #f0f9ff;
+  border: 2px solid #3b82f6;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+.install-title {
+  font-weight: 600;
+  color: #1e40af;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.install-steps {
+  font-size: 14px;
+  line-height: 1.8;
+  color: #374151;
+}
+.install-steps li {
+  margin-left: 20px;
+  margin-bottom: 8px;
+}
+.btn {
+  width: 100%;
+  padding: 14px;
+  background: #1d9e75;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-bottom: 12px;
+  display: none;
+}
+.btn:hover {
+  background: #16805e;
+}
+.status {
+  text-align: center;
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 14px;
+  margin-bottom: 12px;
+}
+.status.success {
+  background: #d1fae5;
+  color: #065f46;
+}
+.status.info {
+  background: #dbeafe;
+  color: #1e40af;
+}
+.feature-list {
+  margin-top: 20px;
+}
+.feature {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 15px;
+  font-size: 14px;
+  color: #374151;
+}
+.feature-icon {
+  width: 24px;
+  height: 24px;
+  background: #1d9e75;
+  border-radius: 50%;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 12px;
+}
+.platform-info {
+  background: #fef3c7;
+  border: 1px solid #f59e0b;
+  border-radius: 8px;
+  padding: 12px;
+  font-size: 13px;
+  color: #92400e;
+  margin-bottom: 15px;
+}
+.demo-btn {
+  width: 100%;
+  padding: 14px;
+  background: #667eea;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  display: block;
+  text-align: center;
+}
+.demo-btn:hover {
+  background: #5568d3;
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>🧘‍♀️ 健康管理助理</h1>
+  <div class="subtitle">PWA展示版 - 可安裝到手機桌面</div>
+
+  <div id="statusMessage"></div>
+
+  <button id="installBtn" class="btn">📱 安裝到桌面</button>
+
+  <div class="install-box">
+    <div class="install-title">
+      <span>📲</span>
+      <span>如何安裝到手機?</span>
+    </div>
+    <div class="install-steps">
+      <strong>iOS (Safari):</strong>
+      <ol>
+        <li>點擊底部「分享」按鈕</li>
+        <li>選擇「加入主畫面」</li>
+        <li>點擊「加入」</li>
+      </ol>
+      <strong>Android (Chrome):</strong>
+      <ol>
+        <li>點擊右上角「⋮」選單</li>
+        <li>選擇「安裝應用程式」或「加到主畫面」</li>
+        <li>點擊「安裝」</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="platform-info" id="platformInfo">
+    正在偵測你的裝置...
+  </div>
+
+  <div class="feature-list">
+    <div class="feature">
+      <div class="feature-icon">✓</div>
+      <div>
+        <strong>離線使用</strong><br>
+        即使沒有網路也能開啟和記錄
+      </div>
+    </div>
+    <div class="feature">
+      <div class="feature-icon">✓</div>
+      <div>
+        <strong>像原生APP</strong><br>
+        全螢幕體驗,沒有瀏覽器工具列
+      </div>
+    </div>
+    <div class="feature">
+      <div class="feature-icon">✓</div>
+      <div>
+        <strong>跨裝置同步</strong><br>
+        資料自動儲存在雲端
+      </div>
+    </div>
+    <div class="feature">
+      <div class="feature-icon">✓</div>
+      <div>
+        <strong>桌面圖示</strong><br>
+        就像其他APP一樣放在桌面
+      </div>
+    </div>
+  </div>
+
+  <a href="app.html" class="demo-btn" style="margin-top:20px">
+    進入完整版健康管理系統 →
+  </a>
+</div>
+
+<script>
+// 偵測平台
+function detectPlatform() {
+  const ua = navigator.userAgent;
+  const infoBox = document.getElementById('platformInfo');
+  
+  if (/iPhone|iPad|iPod/.test(ua)) {
+    infoBox.innerHTML = '📱 <strong>iOS裝置</strong> - 請用Safari開啟,點擊分享按鈕安裝';
+  } else if (/Android/.test(ua)) {
+    infoBox.innerHTML = '🤖 <strong>Android裝置</strong> - Chrome會自動顯示安裝提示';
+  } else {
+    infoBox.innerHTML = '💻 <strong>桌面電腦</strong> - Chrome/Edge也可以安裝PWA到桌面';
+  }
+}
+
+// PWA安裝提示
+let deferredPrompt;
+const installBtn = document.getElementById('installBtn');
+const statusMessage = document.getElementById('statusMessage');
+
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+  installBtn.style.display = 'block';
+  showStatus('✨ 可以安裝到桌面了!', 'info');
+});
+
+installBtn.addEventListener('click', async () => {
+  if (!deferredPrompt) {
+    showStatus('請使用瀏覽器選單的「安裝」功能', 'info');
+    return;
+  }
+  
+  deferredPrompt.prompt();
+  const { outcome } = await deferredPrompt.userChoice;
+  
+  if (outcome === 'accepted') {
+    showStatus('✅ 安裝成功!可以從桌面開啟了', 'success');
+    installBtn.style.display = 'none';
+  }
+  
+  deferredPrompt = null;
+});
+
+// 偵測是否已安裝
+window.addEventListener('appinstalled', () => {
+  showStatus('✅ 已成功安裝到桌面!', 'success');
+  installBtn.style.display = 'none';
+  deferredPrompt = null;
+});
+
+// 偵測是否在獨立模式(已安裝)開啟
+if (window.matchMedia('(display-mode: standalone)').matches) {
+  showStatus('✅ 已在APP模式運行', 'success');
+}
+
+function showStatus(message, type) {
+  statusMessage.innerHTML = `<div class="status ${type}">${message}</div>`;
+}
+
+// 註冊Service Worker
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('service-worker.js')
+      .then(reg => console.log('Service Worker 註冊成功:', reg.scope))
+      .catch(err => console.log('Service Worker 註冊失敗:', err));
+  });
+}
+
+detectPlatform();
+</script>
+</body>
+</html>
