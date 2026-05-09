@@ -1,4 +1,4 @@
-// Vercel Serverless Function - 代理Anthropic API呼叫
+// Vercel Serverless Function - 使用Google Gemini API
 export default async function handler(req, res) {
   // 設定CORS
   res.setHeader('Access-Control-Allow-Credentials', true);
@@ -19,7 +19,7 @@ export default async function handler(req, res) {
 
   try {
     // 從環境變數取得API Key
-    const apiKey = process.env.ANTHROPIC_API_KEY;
+    const apiKey = process.env.GEMINI_API_KEY;
     
     if (!apiKey) {
       return res.status(500).json({ error: 'API Key未設定' });
@@ -27,30 +27,49 @@ export default async function handler(req, res) {
 
     const { system, messages } = req.body;
 
-    // 呼叫Anthropic API
-    const response = await fetch('https://api.anthropic.com/v1/messages', {
+    // 組合完整的prompt(Gemini不支援分離的system message)
+    const userMessage = messages[0].content;
+    const fullPrompt = `${system}\n\n${userMessage}`;
+
+    // 呼叫Google Gemini API
+    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': apiKey,
-        'anthropic-version': '2023-06-01'
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 1000,
-        system: system,
-        messages: messages
+        contents: [{
+          parts: [{
+            text: fullPrompt
+          }]
+        }],
+        generationConfig: {
+          temperature: 0.7,
+          maxOutputTokens: 1000
+        }
       })
     });
 
     const data = await response.json();
 
     if (!response.ok) {
-      console.error('Anthropic API錯誤:', data);
+      console.error('Gemini API錯誤:', data);
       return res.status(response.status).json(data);
     }
 
-    return res.status(200).json(data);
+    // 轉換Gemini格式為Anthropic格式(保持前端相容)
+    const text = data.candidates?.[0]?.content?.parts?.[0]?.text || '無法取得回覆';
+    
+    const anthropicFormat = {
+      content: [
+        {
+          type: 'text',
+          text: text
+        }
+      ]
+    };
+
+    return res.status(200).json(anthropicFormat);
 
   } catch (error) {
     console.error('伺服器錯誤:', error);
