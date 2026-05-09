@@ -4,209 +4,671 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#1d9e75">
+<meta name="description" content="你的AI健康管理助理 - 4個月達成體脂目標">
 <title>健康管理助理</title>
 <link rel="manifest" href="manifest.json">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:#f5f5f5}
-.app{max-width:420px;margin:0 auto;background:white;min-height:100vh}
-.header{background:#1d9e75;color:white;padding:15px 20px;display:flex;justify-content:space-between;align-items:center}
-.header h1{font-size:18px}
-.sync{font-size:11px;background:rgba(255,255,255,0.2);padding:4px 8px;border-radius:12px}
-.nav{display:flex;overflow-x:auto;border-bottom:1px solid #e5e5e5;background:white}
-.nb{flex-shrink:0;padding:12px 16px;font-size:12px;background:none;border:none;border-bottom:2px solid transparent;cursor:pointer;color:#666;font-family:inherit}
+.app{max-width:420px;margin:0 auto;background:white;min-height:100vh;padding-bottom:20px}
+.header{background:#1d9e75;color:white;padding:12px 16px;display:flex;justify-content:space-between;align-items:center}
+.header h1{font-size:17px;font-weight:600}
+.sync{font-size:10px;background:rgba(255,255,255,0.2);padding:3px 7px;border-radius:10px}
+.nav{display:flex;overflow-x:auto;border-bottom:1px solid #e5e5e5;background:white;-webkit-overflow-scrolling:touch}
+.nb{flex-shrink:0;padding:10px 14px;font-size:11px;background:none;border:none;border-bottom:2px solid transparent;cursor:pointer;color:#666;font-family:inherit;font-weight:500}
 .nb.active{color:#1d9e75;border-bottom-color:#1d9e75;font-weight:600}
-.tab{display:none;padding:16px}
+.tab{display:none;padding:14px}
 .tab.active{display:block}
-.card{background:white;border:1px solid #e5e5e5;border-radius:12px;padding:16px;margin-bottom:12px}
-.sec{font-size:16px;font-weight:600;margin-bottom:12px}
-.field{margin-bottom:12px}
-.field label{display:block;font-size:13px;color:#666;margin-bottom:6px}
-.field input,.field textarea{width:100%;font-size:14px;padding:10px;border:1px solid #e5e5e5;border-radius:8px;font-family:inherit}
-.field textarea{resize:vertical;min-height:60px}
-.btn{width:100%;padding:14px;background:#1d9e75;color:white;border:none;border-radius:10px;font-size:15px;font-weight:600;cursor:pointer;margin-top:8px}
-.btn:active{background:#16805e}
-.r2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.metric{background:#f8f9fa;border-radius:8px;padding:12px}
-.ml{font-size:11px;color:#666;margin-bottom:4px}
-.mv{font-size:20px;font-weight:600}
-.loading{text-align:center;padding:12px;color:#666;font-size:13px;display:none}
+.card{background:white;border:1px solid #e5e5e5;border-radius:12px;padding:14px 16px;margin-bottom:12px}
+.sec{font-size:15px;font-weight:600;margin-bottom:10px;color:#333}
+.field{margin-bottom:10px}
+.field label{display:block;font-size:12px;color:#666;margin-bottom:5px}
+.field input,.field textarea{width:100%;font-size:14px;padding:9px;border:1px solid #ddd;border-radius:8px;font-family:inherit}
+.field textarea{resize:vertical;min-height:50px;line-height:1.4}
+.r2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+.metric{background:#f8f9fa;border-radius:8px;padding:10px}
+.ml{font-size:10px;color:#666;margin-bottom:3px;text-transform:uppercase;letter-spacing:0.5px}
+.mv{font-size:19px;font-weight:600;color:#333}
+.mv.good{color:#1d9e75}
+.mv.warn{color:#f59e0b}
+.mv.bad{color:#ef4444}
+.btn{width:100%;padding:12px;background:#1d9e75;color:white;border:none;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;margin-top:6px;font-family:inherit}
+.btn:active{transform:scale(0.98);background:#16805e}
+.loading{text-align:center;padding:10px;color:#666;font-size:12px;display:none}
+.about{background:#fef3c7;border:1px solid #fbbf24;border-radius:10px;padding:12px;margin-bottom:12px}
+.about-title{font-size:13px;font-weight:600;color:#92400e;margin-bottom:5px}
+.about-text{font-size:11px;line-height:1.5;color:#78350f}
+.wc,.sc{display:flex;align-items:center;gap:8px;margin-top:6px}
+.wv,.sv{font-size:17px;font-weight:600;width:55px;text-align:center}
+.wb{width:32px;height:32px;border-radius:50%;border:1px solid #ddd;background:white;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:inherit;font-weight:600;color:#333}
+.wb:active{background:#f0f0f0}
+.bar-wrap{margin-bottom:8px}
+.bar-label{display:flex;justify-content:space-between;font-size:10px;color:#666;margin-bottom:3px}
+.bar{height:5px;background:#e5e7eb;border-radius:3px;overflow:hidden}
+.bar-fill{height:100%;border-radius:3px;transition:width 0.3s}
+.tag{display:inline-block;font-size:10px;padding:2px 6px;border-radius:5px;margin:2px 2px 2px 0;font-weight:500}
+.tg{background:#d1fae5;color:#065f46}
+.tb{background:#dbeafe;color:#1e40af}
+.ty{background:#fef3c7;color:#92400e}
+.tr{background:#fee2e2;color:#991b1b}
+.hr{padding:8px 0;border-bottom:1px solid #f0f0f0;font-size:12px}
+.hr:last-child{border-bottom:none}
+.hd{font-size:10px;color:#999;margin-bottom:3px}
+.meal-row{display:flex;align-items:flex-start;gap:8px;padding:7px 0;border-bottom:1px solid #f5f5f5}
+.meal-row:last-child{border-bottom:none}
+.meal-time{font-size:10px;color:#999;width:35px;flex-shrink:0;padding-top:2px}
+.meal-info{flex:1}
+.meal-name{font-size:12px;font-weight:600;color:#333;margin-bottom:2px}
+.meal-desc{font-size:11px;color:#666}
+.meal-cal{font-size:11px;color:#999;flex-shrink:0}
+.day-row{display:flex;align-items:flex-start;gap:6px;padding:6px 0;border-bottom:1px solid #f5f5f5}
+.day-row:last-child{border-bottom:none}
+.day-num{width:22px;font-size:11px;font-weight:600;flex-shrink:0;padding-top:1px}
+.day-content{flex:1}
+.day-main{font-size:12px;color:#333;font-weight:500}
+.day-sub{font-size:10px;color:#666;margin-top:1px}
+.phase{border-radius:8px;padding:8px 11px;margin-bottom:8px}
+.ph1{background:#d1fae5;border:1px solid #a7f3d0}
+.ph1 .pt{color:#065f46;font-size:12px;font-weight:600}
+.ph1 .ps{color:#047857;font-size:10px;margin-top:2px}
+.ph2{background:#dbeafe;border:1px solid #bfdbfe}
+.ph2 .pt{color:#1e40af;font-size:12px;font-weight:600}
+.ph2 .ps{color:#1d4ed8;font-size:10px;margin-top:2px}
+.fb-empty{padding:12px;background:#f9fafb;border-radius:10px;text-align:center;font-size:12px;color:#6b7280}
+.fb-card{background:#f9fafb;border-radius:10px;padding:12px;margin-bottom:10px}
+.fb-date{font-size:10px;color:#999;margin-bottom:6px}
+.fb-text{font-size:13px;line-height:1.6;color:#333;white-space:pre-wrap}
+.ask-box{background:#f0f9ff;border:1px solid #bae6fd;border-radius:10px;padding:12px;margin-bottom:10px}
+.ask-intro{font-size:12px;line-height:1.5;color:#0c4a6e;margin-bottom:8px}
+.ask-btn{width:100%;padding:10px;background:white;border:1px solid #ddd;border-radius:8px;font-size:12px;cursor:pointer;margin-bottom:6px;text-align:left;color:#333;font-family:inherit}
+.ask-btn:active{background:#f0f0f0}
+.input-row{display:flex;gap:6px}
+.input-row input{flex:1;font-size:13px;padding:9px}
+.input-row button{padding:9px 12px;font-size:12px;flex-shrink:0}
 </style>
 </head>
 <body>
 <div class="app">
 <div class="header">
   <h1>🧘‍♀️ 健康管理助理</h1>
-  <div class="sync" id="sync">已同步</div>
+  <div class="sync" id="sync">載入中</div>
 </div>
 
 <div class="nav">
-  <button class="nb active" onclick="sw('log',this)">記錄</button>
-  <button class="nb" onclick="sw('overview',this)">總覽</button>
+  <button class="nb active" onclick="sw('overview',this)">總覽</button>
+  <button class="nb" onclick="sw('log',this)">記錄</button>
+  <button class="nb" onclick="sw('menu',this)">菜單</button>
+  <button class="nb" onclick="sw('workout',this)">運動</button>
+  <button class="nb" onclick="sw('feedback',this)">回饋</button>
+  <button class="nb" onclick="sw('history',this)">歷史</button>
   <button class="nb" onclick="sw('progress',this)">進度</button>
+  <button class="nb" onclick="sw('ask',this)">問我</button>
 </div>
 
-<div id="tab-log" class="tab active">
+<div id="tab-overview" class="tab active">
+  <div class="about">
+    <div class="about-title">🧘 你的AI營養師</div>
+    <div class="about-text">擁有10年營養師經驗、長期瑜珈練習(瑜珈經、阿育吠陀、陰瑜珈、Vinyasa、阿斯坦加)。親切、幽默且富同理心,同時具備數據專業,嚴格監督你的進度。目標:協助你4個月內將體脂從34.4%降至29%。</div>
+  </div>
+
+  <div class="r2">
+    <div class="metric"><div class="ml">目前體重</div><div class="mv">57 kg</div></div>
+    <div class="metric"><div class="ml">目前體脂</div><div class="mv">34.4%</div></div>
+    <div class="metric"><div class="ml">目標體脂</div><div class="mv good">29%</div></div>
+    <div class="metric"><div class="ml">計畫週期</div><div class="mv good">16 週</div></div>
+  </div>
+
   <div class="card">
-    <div class="sec">今日記錄</div>
-    <div class="r2">
-      <div class="field">
-        <label>體重(kg)</label>
-        <input type="number" id="weight" step="0.1" placeholder="57.0">
-      </div>
-      <div class="field">
-        <label>體脂率(%)</label>
-        <input type="number" id="bodyfat" step="0.1" placeholder="34.4">
-      </div>
+    <div class="sec">每日營養目標</div>
+    <div style="font-size:12px;line-height:1.8;color:#666">
+      熱量: <strong>1,620–1,680 kcal</strong><br>
+      蛋白質(優先): <strong>70–80g</strong><br>
+      碳水: 170–185g | 脂肪: 48–55g
     </div>
-    <div class="field">
-      <label>早餐</label>
-      <textarea id="meal1" placeholder="燕麥粥50g、水煮蛋2顆"></textarea>
+  </div>
+
+  <div class="card">
+    <div class="sec">四個月里程碑</div>
+    <div class="bar-wrap">
+      <div class="bar-label"><span>第1月 建立習慣</span><span>32%</span></div>
+      <div class="bar"><div class="bar-fill" style="width:100%;background:#1d9e75"></div></div>
     </div>
-    <div class="field">
-      <label>午餐</label>
-      <textarea id="meal2" placeholder="雞胸肉100g、糙米半碗"></textarea>
+    <div class="bar-wrap">
+      <div class="bar-label"><span>第2月 強化期</span><span>31%</span></div>
+      <div class="bar"><div class="bar-fill" style="width:75%;background:#3b82f6"></div></div>
     </div>
-    <div class="field">
-      <label>晚餐</label>
-      <textarea id="meal3" placeholder="鮭魚100g、地瓜100g"></textarea>
+    <div class="bar-wrap">
+      <div class="bar-label"><span>第3月 進階期</span><span>30%</span></div>
+      <div class="bar"><div class="bar-fill" style="width:50%;background:#f59e0b"></div></div>
     </div>
-    <div class="field">
-      <label>運動</label>
-      <textarea id="exercise" placeholder="超慢跑30分鐘"></textarea>
+    <div class="bar-wrap" style="margin-bottom:0">
+      <div class="bar-label"><span>第4月 達標</span><span style="color:#1d9e75;font-weight:600">29% ✓</span></div>
+      <div class="bar"><div class="bar-fill" style="width:25%;background:#ef4444"></div></div>
     </div>
-    <button class="btn" onclick="save()">送出記錄</button>
-    <div class="loading" id="loading">儲存中...</div>
   </div>
 </div>
 
-<div id="tab-overview" class="tab">
+<div id="tab-log" class="tab">
   <div class="card">
-    <div class="sec">目標追蹤</div>
+    <div class="sec">身體數據</div>
     <div class="r2">
-      <div class="metric">
-        <div class="ml">目前體脂</div>
-        <div class="mv">34.4%</div>
-      </div>
-      <div class="metric">
-        <div class="ml">目標體脂</div>
-        <div class="mv" style="color:#1d9e75">29%</div>
+      <div class="field"><label>體重(kg)</label><input type="number" id="weight" step="0.1" placeholder="57.0"></div>
+      <div class="field"><label>體脂率(%)</label><input type="number" id="bodyfat" step="0.1" placeholder="34.4"></div>
+    </div>
+    <div class="field"><label>肌肉量(kg,選填)</label><input type="number" id="muscle" step="0.1" placeholder="例:35.2"></div>
+  </div>
+
+  <div class="card">
+    <div class="sec">三餐內容</div>
+    <div class="field"><label>☀️ 早餐</label><textarea id="meal1" placeholder="燕麥粥50g、水煮蛋2顆、無糖豆漿240ml"></textarea></div>
+    <div class="field"><label>🌞 午餐</label><textarea id="meal2" placeholder="雞胸肉100g、糙米半碗、燙青菜"></textarea></div>
+    <div class="field"><label>🌙 晚餐</label><textarea id="meal3" placeholder="鮭魚100g、地瓜100g、大量蔬菜"></textarea></div>
+  </div>
+
+  <div class="card">
+    <div class="sec">運動內容</div>
+    <div class="field"><label>今日運動(類型、時長)</label><textarea id="exercise" placeholder="超慢跑30分鐘、居家徒手訓練45分鐘"></textarea></div>
+    <div class="field"><label>疲累程度(1-10,10最累)</label><input type="number" id="fatigue" min="1" max="10" placeholder="5"></div>
+  </div>
+
+  <div class="card">
+    <div class="sec">喝水量 <span style="font-size:11px;font-weight:400;color:#999">目標2000ml</span></div>
+    <div class="wc">
+      <button class="wb" onclick="adjW(-250)">−</button>
+      <div class="wv"><span id="wv">1500</span><span style="font-size:10px;color:#999;display:block">ml</span></div>
+      <button class="wb" onclick="adjW(250)">+</button>
+      <div style="flex:1">
+        <div class="bar-wrap" style="margin-bottom:0">
+          <div class="bar-label"><span id="wp">75%</span><span>2000ml</span></div>
+          <div class="bar"><div class="bar-fill" id="wb" style="width:75%;background:#3b82f6"></div></div>
+        </div>
       </div>
     </div>
   </div>
+
   <div class="card">
-    <div class="sec">PWA功能展示</div>
-    <p style="font-size:14px;line-height:1.6;color:#666">
-      ✓ 已安裝到桌面<br>
-      ✓ 可以離線使用<br>
-      ✓ 全螢幕APP體驗<br>
-      ✓ 資料雲端同步<br><br>
-      這是簡化版展示,完整版會包含所有功能!
-    </p>
+    <div class="sec">睡眠時數 <span style="font-size:11px;font-weight:400;color:#999">目標7hr+</span></div>
+    <div class="sc">
+      <button class="wb" onclick="adjS(-0.5)">−</button>
+      <div class="sv"><span id="sv">7.0</span><span style="font-size:10px;color:#999;display:block">小時</span></div>
+      <button class="wb" onclick="adjS(0.5)">+</button>
+      <div style="flex:1">
+        <div class="bar-wrap" style="margin-bottom:0">
+          <div class="bar-label"><span id="ss" style="color:#1d9e75">良好</span><span>7hr+</span></div>
+          <div class="bar"><div class="bar-fill" id="sb" style="width:100%;background:#1d9e75"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <button class="btn" onclick="submitLog()">送出今日記錄,請AI分析</button>
+  <div class="loading" id="logLoad">AI營養師分析中...</div>
+</div>
+
+<div id="tab-menu" class="tab">
+  <div class="card">
+    <div class="sec">每日菜單建議</div>
+    <div class="meal-row">
+      <div class="meal-time">早餐<br>7-8am</div>
+      <div class="meal-info">
+        <div class="meal-name">燕麥粥50g + 水煮蛋2顆</div>
+        <div class="meal-desc">無糖豆漿240ml</div>
+        <div style="margin-top:3px">
+          <span class="tag tg">蛋白質28g</span>
+          <span class="tag tb">碳水36g</span>
+        </div>
+      </div>
+      <div class="meal-cal">~385<br>kcal</div>
+    </div>
+    <div class="meal-row">
+      <div class="meal-time">午餐<br>12pm</div>
+      <div class="meal-info">
+        <div class="meal-name">雞胸肉100g + 糙米半碗(211餐盤)</div>
+        <div class="meal-desc">燙青菜大量 + 橄欖油少許</div>
+        <div style="margin-top:3px">
+          <span class="tag tg">蛋白質33g</span>
+          <span class="tag tb">碳水47g</span>
+        </div>
+      </div>
+      <div class="meal-cal">~460<br>kcal</div>
+    </div>
+    <div class="meal-row">
+      <div class="meal-time">點心<br>3-4pm</div>
+      <div class="meal-info">
+        <div class="meal-name">無糖希臘優格120g</div>
+        <div class="meal-desc">混合堅果15g</div>
+        <div style="margin-top:3px">
+          <span class="tag tg">蛋白質14g</span>
+        </div>
+      </div>
+      <div class="meal-cal">~200<br>kcal</div>
+    </div>
+    <div class="meal-row">
+      <div class="meal-time">晚餐<br>6-7pm</div>
+      <div class="meal-info">
+        <div class="meal-name">鮭魚100g + 地瓜100g</div>
+        <div class="meal-desc">大量蔬菜 + 嫩豆腐半盒</div>
+        <div style="margin-top:3px">
+          <span class="tag tg">蛋白質28g</span>
+          <span class="tag tb">碳水40g</span>
+        </div>
+      </div>
+      <div class="meal-cal">~450<br>kcal</div>
+    </div>
+    <div style="background:#f9fafb;border-radius:8px;padding:10px;margin-top:10px;font-size:12px;color:#666">
+      今日合計: <strong style="color:#333">~1,495kcal</strong> | 蛋白質<strong style="color:#1d9e75">103g ✓</strong>
+    </div>
+  </div>
+</div>
+
+<div id="tab-workout" class="tab">
+  <div class="phase ph1">
+    <div class="pt">第一個月 — 建立習慣期</div>
+    <div class="ps">每週訓練2-3次,學正確動作,讓身體適應</div>
+  </div>
+
+  <div class="card">
+    <div class="sec">本週排程(可依疲累度調整)</div>
+    <div class="day-row">
+      <div class="day-num">一</div>
+      <div class="day-content">
+        <div class="day-main">居家徒手訓練(全身)</div>
+        <div class="day-sub">深蹲×15、跪姿伏地挺身×10、臀橋×15 | 45分</div>
+      </div>
+      <span class="tag tr">肌力</span>
+    </div>
+    <div class="day-row">
+      <div class="day-num">二</div>
+      <div class="day-content">
+        <div class="day-main">陰瑜珈或修復瑜珈</div>
+        <div class="day-sub">下犬式、嬰兒式、臥鴿式 | 40-60分</div>
+      </div>
+      <span class="tag tg">恢復</span>
+    </div>
+    <div class="day-row">
+      <div class="day-num">三</div>
+      <div class="day-content">
+        <div class="day-main">超慢跑</div>
+        <div class="day-sub">配速8-9分/公里,心率120-135 | 20-25分</div>
+      </div>
+      <span class="tag tb">有氧</span>
+    </div>
+    <div class="day-row">
+      <div class="day-num">四</div>
+      <div class="day-content">
+        <div class="day-main">居家徒手訓練(全身)</div>
+        <div class="day-sub">反向划船×10、側棒式×20秒 | 45分</div>
+      </div>
+      <span class="tag tr">肌力</span>
+    </div>
+    <div class="day-row">
+      <div class="day-num">五</div>
+      <div class="day-content">
+        <div class="day-main">Vinyasa流動瑜珈</div>
+        <div class="day-sub">拜日式、戰士流動、核心強化 | 40-60分</div>
+      </div>
+      <span class="tag tg">恢復</span>
+    </div>
+    <div class="day-row">
+      <div class="day-num">六</div>
+      <div class="day-content">
+        <div class="day-main">輕鬆慢跑</div>
+        <div class="day-sub">不強求配速,享受過程 | 25-30分</div>
+      </div>
+      <span class="tag tb">有氧</span>
+    </div>
+    <div class="day-row">
+      <div class="day-num">日</div>
+      <div class="day-content">
+        <div class="day-main">完全休息</div>
+        <div class="day-sub">遛狗萬步,不額外訓練</div>
+      </div>
+      <span class="tag ty">休息</span>
+    </div>
+  </div>
+</div>
+
+<div id="tab-feedback" class="tab">
+  <div id="fbEmpty" class="fb-empty">尚未送出今日記錄。請到「記錄」分頁填入數據,送出後AI回饋會顯示。</div>
+  <div id="fbCont" style="display:none">
+    <div class="fb-card">
+      <div class="fb-date" id="fbDate"></div>
+      <div class="r2" id="fbMetrics"></div>
+      <div id="fbScores" style="display:flex;flex-wrap:wrap;gap:4px;margin-top:8px"></div>
+    </div>
+    <div class="card">
+      <div class="sec">今日評估與提醒</div>
+      <div class="fb-text" id="fbMain"></div>
+    </div>
+    <div class="card">
+      <div class="sec">明日行動建議</div>
+      <div class="fb-text" id="fbAction"></div>
+    </div>
+  </div>
+</div>
+
+<div id="tab-history" class="tab">
+  <div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+      <div class="sec" style="margin-bottom:0">記錄歷史</div>
+      <span id="hCnt" style="font-size:10px;color:#999">0筆</span>
+    </div>
+    <div id="hList" style="font-size:12px;color:#999">載入中...</div>
   </div>
 </div>
 
 <div id="tab-progress" class="tab">
   <div class="card">
-    <div class="sec">記錄歷史</div>
-    <div id="history" style="font-size:13px;color:#666">
-      尚無記錄,填寫後會顯示在這裡
+    <div class="sec">四個月目標追蹤</div>
+    <div class="bar-wrap">
+      <div class="bar-label"><span>體脂進度</span><span id="bfDisp">34.4%→29%</span></div>
+      <div class="bar"><div class="bar-fill" id="bfBar" style="width:0%;background:#1d9e75"></div></div>
+    </div>
+    <div class="bar-wrap">
+      <div class="bar-label"><span>累積記錄</span><span id="dayDisp">0天/112天</span></div>
+      <div class="bar"><div class="bar-fill" id="dayBar" style="width:0%;background:#3b82f6"></div></div>
+    </div>
+    <div class="bar-wrap" style="margin-bottom:0">
+      <div class="bar-label"><span>計畫週次</span><span id="planDisp">第1週/16週</span></div>
+      <div class="bar"><div class="bar-fill" id="planBar" style="width:6%;background:#8b5cf6"></div></div>
     </div>
   </div>
+
+  <div class="card">
+    <div class="sec">本週習慣達成率</div>
+    <div class="bar-wrap">
+      <div class="bar-label"><span>飲水2000ml+</span><span id="wRate">—</span></div>
+      <div class="bar"><div class="bar-fill" id="wRateBar" style="width:0%;background:#3b82f6"></div></div>
+    </div>
+    <div class="bar-wrap">
+      <div class="bar-label"><span>睡眠7小時+</span><span id="sRate">—</span></div>
+      <div class="bar"><div class="bar-fill" id="sRateBar" style="width:0%;background:#1d9e75"></div></div>
+    </div>
+    <div class="bar-wrap" style="margin-bottom:0">
+      <div class="bar-label"><span>有運動</span><span id="eRate">—</span></div>
+      <div class="bar"><div class="bar-fill" id="eRateBar" style="width:0%;background:#8b5cf6"></div></div>
+    </div>
+  </div>
+</div>
+
+<div id="tab-ask" class="tab">
+  <div class="ask-box">
+    <div class="ask-intro">你好!我是你的專屬AI營養師,有10年經驗且長期練習瑜珈。我會親切、幽默地陪伴你,同時嚴格監督進度。偶爾應酬或暴食別擔心,我會給你補救計畫!</div>
+    <button class="ask-btn" onclick="askQ('昨晚應酬吃了火鍋和啤酒,今天該怎麼補救?')">昨晚應酬暴食,怎麼補救?</button>
+    <button class="ask-btn" onclick="askQ('蛋白質只吃到50g,會影響肌肉嗎?')">蛋白質不足,怎麼補?</button>
+    <button class="ask-btn" onclick="askQ('今天超累疲累度9分,運動該休息還是降強度?')">太累了,該休息嗎?</button>
+  </div>
+  
+  <div style="font-size:11px;color:#999;margin-bottom:5px">直接問我:</div>
+  <div class="input-row">
+    <input type="text" id="userQ" placeholder="輸入問題...">
+    <button onclick="askCustomQ()" style="background:#1d9e75;color:white;border:none;border-radius:8px;font-weight:600">送出</button>
+  </div>
+  <div class="loading" id="askLoad">AI營養師思考中...</div>
+  <div id="askResp" style="display:none;background:white;border:1px solid #e5e5e5;border-radius:10px;padding:12px;margin-top:10px;font-size:13px;line-height:1.6;white-space:pre-wrap"></div>
 </div>
 
 </div>
 
 <script>
-let logs = [];
+let w=1500,s=7,logs=[];
 
-async function loadData() {
-  try {
-    const stored = localStorage.getItem('health-logs');
-    if (stored) logs = JSON.parse(stored);
-    renderHistory();
-  } catch(e) {
-    console.error('載入失敗', e);
-  }
+function setSyn(st,msg){
+const el=document.getElementById('sync');
+el.className='sync';
+el.textContent=msg;
+if(st==='ok')el.style.background='rgba(255,255,255,0.3)';
 }
 
-async function save() {
-  const weight = document.getElementById('weight').value;
-  const bodyfat = document.getElementById('bodyfat').value;
-  const meal1 = document.getElementById('meal1').value;
-  const meal2 = document.getElementById('meal2').value;
-  const meal3 = document.getElementById('meal3').value;
-  const exercise = document.getElementById('exercise').value;
-  
-  if (!meal1 && !meal2 && !meal3) {
-    alert('請至少填入一餐');
-    return;
-  }
-  
-  const entry = {
-    date: new Date().toLocaleDateString('zh-TW'),
-    weight,
-    bodyfat,
-    meal1,
-    meal2,
-    meal3,
-    exercise
-  };
-  
-  logs.unshift(entry);
-  localStorage.setItem('health-logs', JSON.stringify(logs));
-  
-  document.getElementById('loading').style.display = 'block';
-  setTimeout(() => {
-    document.getElementById('loading').style.display = 'none';
-    alert('✅ 記錄已儲存!');
-    renderHistory();
-    clearForm();
-  }, 500);
+async function loadLogs(){
+setSyn('loading','載入中');
+try{
+const stored=localStorage.getItem('health-logs');
+if(stored)logs=JSON.parse(stored);
+setSyn('ok','已同步');
+renderHist();
+updateProg();
+}catch(e){
+logs=[];
+setSyn('ok','新記錄');
+}}
+
+async function saveLogs(){
+try{
+localStorage.setItem('health-logs',JSON.stringify(logs.slice(0,112)));
+setSyn('ok','已儲存');
+}catch(e){
+setSyn('err','儲存失敗');
+}}
+
+function sw(n,btn){
+document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+document.querySelectorAll('.nb').forEach(b=>b.classList.remove('active'));
+document.getElementById('tab-'+n).classList.add('active');
+btn.classList.add('active');
+if(n==='progress')updateProg();
+if(n==='history')renderHist();
 }
 
-function clearForm() {
-  document.getElementById('weight').value = '';
-  document.getElementById('bodyfat').value = '';
-  document.getElementById('meal1').value = '';
-  document.getElementById('meal2').value = '';
-  document.getElementById('meal3').value = '';
-  document.getElementById('exercise').value = '';
+function adjW(d){
+w=Math.max(0,Math.min(4000,w+d));
+document.getElementById('wv').textContent=w;
+const p=Math.min(100,Math.round(w/2000*100));
+document.getElementById('wp').textContent=p+'%';
+document.getElementById('wb').style.width=p+'%';
 }
 
-function renderHistory() {
-  const hist = document.getElementById('history');
-  if (logs.length === 0) {
-    hist.innerHTML = '尚無記錄,填寫後會顯示在這裡';
-    return;
-  }
-  
-  hist.innerHTML = logs.map(log => `
-    <div style="padding:10px 0;border-bottom:1px solid #f0f0f0">
-      <div style="font-weight:600;margin-bottom:4px">${log.date}</div>
-      ${log.weight ? `<div>體重: ${log.weight}kg</div>` : ''}
-      ${log.bodyfat ? `<div>體脂: ${log.bodyfat}%</div>` : ''}
-      ${log.exercise ? `<div>運動: ${log.exercise}</div>` : ''}
-    </div>
-  `).join('');
+function adjS(d){
+s=Math.max(0,Math.min(12,parseFloat((s+d).toFixed(1))));
+document.getElementById('sv').textContent=s.toFixed(1);
+const p=Math.min(100,Math.round(s/9*100));
+document.getElementById('sb').style.width=p+'%';
+const st=document.getElementById('ss');
+if(s>=7){st.textContent='良好';st.style.color='#1d9e75';}
+else if(s>=6){st.textContent='稍不足';st.style.color='#f59e0b';}
+else{st.textContent='不足';st.style.color='#ef4444';}
 }
 
-function sw(name, btn) {
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  document.querySelectorAll('.nb').forEach(b => b.classList.remove('active'));
-  document.getElementById('tab-' + name).classList.add('active');
-  btn.classList.add('active');
-  if (name === 'progress') renderHistory();
+async function submitLog(){
+const wt=parseFloat(document.getElementById('weight').value)||null;
+const bf=parseFloat(document.getElementById('bodyfat').value)||null;
+const mu=parseFloat(document.getElementById('muscle').value)||null;
+const m1=document.getElementById('meal1').value.trim();
+const m2=document.getElementById('meal2').value.trim();
+const m3=document.getElementById('meal3').value.trim();
+const ex=document.getElementById('exercise').value.trim();
+const ft=parseInt(document.getElementById('fatigue').value)||null;
+
+if(!m1&&!m2&&!m3){alert('請至少填入一餐內容');return;}
+
+const t=new Date();
+const dk=t.toISOString().slice(0,10);
+const ds=t.toLocaleDateString('zh-TW',{month:'numeric',day:'numeric',weekday:'short'});
+
+const ent={dateKey:dk,date:ds,weight:wt,bodyfat:bf,muscle:mu,meal1:m1,meal2:m2,meal3:m3,exercise:ex,fatigue:ft,water:w,sleep:s};
+
+const ei=logs.findIndex(l=>l.dateKey===dk);
+if(ei>=0)logs[ei]=ent;else logs.unshift(ent);
+
+document.getElementById('logLoad').style.display='block';
+
+const sys=`你是一位專業的一對一健康管理助理,擁有10年的營養師經歷,而且有長期瑜珈練習經驗(懂得瑜珈經、阿育吠陀、陰瑜珈、流動瑜珈Vinyasa、阿斯坦加)。個性親切、幽默且富有同理心,但也具備數據專業,會嚴格監督我的進度。你的目標是協助我在4個月內將體脂從34.4%降至29%。
+
+回饋原則:數據導向(體脂下降給予鼓勵,肌肉流失提醒增加蛋白質)、檢視蛋白質是否足夠(目標70-80g)、檢視水分是否達標、效率優先(上班族最省時的備餐與運動建議)、拒絕焦慮(應酬暴食給予安慰並制定補救計畫)。
+
+用戶資料:身高152cm,起始體重57kg,年齡35歲,起始體脂34.4%,目標體脂29%(4個月16週),蛋白質目標70-80g/天,運動:超慢跑、居家徒手、瑜珈,每天遛狗萬步。
+
+根據今日數據,請提供:
+1. 【今日評估】飲食、運動、水分、睡眠各一句評價,如有肌肉量數據要特別提醒
+2. 【重點提醒】最重要的1-2個問題,坦率但溫柔地指出
+3. 【明日行動】具體可執行的3個建議,如果疲累度高要調整運動
+
+繁體中文,親切幽默,總字數250-350字,用【】標記各段落。`;
+
+try{
+const res=await fetch('https://api.anthropic.com/v1/messages',{
+method:'POST',
+headers:{'Content-Type':'application/json'},
+body:JSON.stringify({
+model:'claude-sonnet-4-20250514',
+max_tokens:1000,
+system:sys,
+messages:[{role:'user',content:buildPr(ent)}]
+})
+});
+const data=await res.json();
+const txt=data.content?.map(i=>i.text||'').join('')||'無法取得回覆,請稍後再試。';
+document.getElementById('logLoad').style.display='none';
+
+ent.aiText=txt;
+if(ei>=0)logs[ei]=ent;else logs[0]=ent;
+
+await saveLogs();
+showFb(ent,txt);
+renderHist();
+
+sw('feedback',document.querySelectorAll('.nb')[4]);
+}catch(e){
+document.getElementById('logLoad').style.display='none';
+alert('連線錯誤,請稍後再試。');
+}}
+
+function buildPr(log){
+let p='今日記錄('+log.date+'):\n';
+if(log.weight)p+='體重:'+log.weight+'kg\n';
+if(log.bodyfat)p+='體脂率:'+log.bodyfat+'%\n';
+if(log.muscle)p+='肌肉量:'+log.muscle+'kg\n';
+p+='早餐:'+(log.meal1||'未填寫')+'\n';
+p+='午餐:'+(log.meal2||'未填寫')+'\n';
+p+='晚餐:'+(log.meal3||'未填寫')+'\n';
+p+='運動:'+(log.exercise||'未運動')+'\n';
+if(log.fatigue)p+='疲累程度:'+log.fatigue+'/10\n';
+p+='喝水:'+log.water+'ml\n';
+p+='睡眠:'+log.sleep+'小時\n';
+return p;
 }
 
-// Service Worker註冊
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('service-worker.js')
-    .then(() => console.log('SW已註冊'))
-    .catch(err => console.log('SW註冊失敗', err));
+function showFb(log,txt){
+document.getElementById('fbEmpty').style.display='none';
+document.getElementById('fbCont').style.display='block';
+document.getElementById('fbDate').textContent=log.date+' 記錄';
+
+const m=document.getElementById('fbMetrics');
+m.innerHTML='';
+if(log.weight)m.innerHTML+='<div class="metric"><div class="ml">體重</div><div class="mv">'+log.weight+'kg</div></div>';
+if(log.bodyfat){
+const cls=log.bodyfat<=30?'good':log.bodyfat<=33?'warn':'bad';
+m.innerHTML+='<div class="metric"><div class="ml">體脂率</div><div class="mv '+cls+'">'+log.bodyfat+'%</div></div>';
+}
+if(log.muscle)m.innerHTML+='<div class="metric"><div class="ml">肌肉量</div><div class="mv">'+log.muscle+'kg</div></div>';
+
+const sc=document.getElementById('fbScores');
+sc.innerHTML='';
+sc.innerHTML+='<span class="tag '+(log.water>=2000?'tg':'tr')+'">飲水'+(log.water>=2000?'✓':'需補')+'</span>';
+sc.innerHTML+='<span class="tag '+(log.sleep>=7?'tg':'tr')+'">睡眠'+(log.sleep>=7?'✓':'不足')+'</span>';
+sc.innerHTML+='<span class="tag '+(log.exercise&&log.exercise.length>2?'tg':'ty')+'">運動'+(log.exercise&&log.exercise.length>2?'✓':'未記錄')+'</span>';
+
+const parts=txt.split(/(?=【)/);
+const main=parts.filter(p=>p.includes('今日評估')||p.includes('重點提醒')).join('\n\n');
+const action=parts.find(p=>p.includes('明日行動'))||'';
+document.getElementById('fbMain').textContent=main.trim()||txt;
+document.getElementById('fbAction').textContent=action.trim()||'請參考上方建議。';
 }
 
-loadData();
+function renderHist(){
+const list=document.getElementById('hList');
+document.getElementById('hCnt').textContent=logs.length+'筆';
+if(logs.length===0){
+list.innerHTML='尚無記錄。開始填寫後將在此累積。';
+return;
+}
+list.innerHTML=logs.map(log=>{
+const tags=[];
+if(log.weight)tags.push('<span class="tag tb">'+log.weight+'kg</span>');
+if(log.bodyfat)tags.push('<span class="tag ty">'+log.bodyfat+'%</span>');
+if(log.water>=2000)tags.push('<span class="tag tg">'+log.water+'ml✓</span>');
+if(log.exercise)tags.push('<span class="tag tg">運動✓</span>');
+return '<div class="hr"><div class="hd">'+log.date+'</div>'+tags.join('')+'</div>';
+}).join('');
+}
+
+function updateProg(){
+const days=logs.length;
+document.getElementById('dayDisp').textContent=days+'天/112天';
+document.getElementById('dayBar').style.width=Math.min(100,Math.round(days/112*100))+'%';
+
+const week=Math.min(16,Math.ceil(days/7)||1);
+document.getElementById('planDisp').textContent='第'+week+'週/16週';
+document.getElementById('planBar').style.width=Math.round(week/16*100)+'%';
+
+const latestBf=logs.find(l=>l.bodyfat)?.bodyfat;
+if(latestBf){
+const prog=Math.max(0,Math.min(100,Math.round((34.4-latestBf)/(34.4-29)*100)));
+document.getElementById('bfDisp').textContent=parseFloat(latestBf).toFixed(1)+'%→29%';
+document.getElementById('bfBar').style.width=prog+'%';
+}
+
+const recent=logs.slice(0,7);
+if(recent.length>0){
+const wp=Math.round(recent.filter(l=>l.water>=2000).length/recent.length*100);
+const sp=Math.round(recent.filter(l=>l.sleep>=7).length/recent.length*100);
+const ep=Math.round(recent.filter(l=>l.exercise&&l.exercise.length>2).length/recent.length*100);
+document.getElementById('wRate').textContent=wp+'%';
+document.getElementById('sRate').textContent=sp+'%';
+document.getElementById('eRate').textContent=ep+'%';
+document.getElementById('wRateBar').style.width=wp+'%';
+document.getElementById('sRateBar').style.width=sp+'%';
+document.getElementById('eRateBar').style.width=ep+'%';
+}}
+
+function askQ(q){
+document.getElementById('userQ').value=q;
+sendToAI(q);
+}
+
+function askCustomQ(){
+const q=document.getElementById('userQ').value.trim();
+if(!q)return;
+sendToAI(q);
+}
+
+async function sendToAI(question){
+const loading=document.getElementById('askLoad');
+const response=document.getElementById('askResp');
+loading.style.display='block';
+response.style.display='none';
+
+const sys='你是一位專業的一對一健康管理助理,擁有10年的營養師經歷,而且有長期瑜珈練習經驗(懂得瑜珈經、阿育吠陀、陰瑜珈、流動瑜珈Vinyasa、阿斯坦加)。個性親切、幽默且富有同理心,但也具備數據專業,會嚴格監督我的進度。用戶資料:身高152cm,體重57kg,年齡35歲,體脂肪34.4%,目標體脂29%,目標增肌減脂同步(4個月計畫),蛋白質目標70-80g/天,運動:超慢跑、居家徒手、瑜珈,每天遛狗約萬步。如果有應酬或暴食情況,請給予安慰與補救計畫,拒絕焦慮。請用繁體中文回答,語氣親切幽默,200字以內,給出具體可執行的建議。';
+
+try{
+const res=await fetch('https://api.anthropic.com/v1/messages',{
+method:'POST',
+headers:{'Content-Type':'application/json'},
+body:JSON.stringify({
+model:'claude-sonnet-4-20250514',
+max_tokens:1000,
+system:sys,
+messages:[{role:'user',content:question}]
+})
+});
+const data=await res.json();
+const text=data.content?.map(i=>i.text||'').join('')||'抱歉,目前無法取得回覆。';
+loading.style.display='none';
+response.style.display='block';
+response.textContent=text;
+}catch(e){
+loading.style.display='none';
+response.style.display='block';
+response.textContent='連線錯誤,請稍後再試。';
+}}
+
+if('serviceWorker' in navigator){
+navigator.serviceWorker.register('service-worker.js')
+.then(()=>console.log('SW註冊成功'))
+.catch(err=>console.log('SW註冊失敗',err));
+}
+
+loadLogs();
 </script>
 </body>
 </html>
