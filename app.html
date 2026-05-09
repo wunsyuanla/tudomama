@@ -506,12 +506,10 @@ const sys=`你是一位專業的一對一健康管理助理,擁有10年的營養
 繁體中文,親切幽默,總字數250-350字,用【】標記各段落。`;
 
 try{
-const res=await fetch('https://api.anthropic.com/v1/messages',{
+const res=await fetch('/api/chat',{
 method:'POST',
 headers:{'Content-Type':'application/json'},
 body:JSON.stringify({
-model:'claude-sonnet-4-20250514',
-max_tokens:1000,
 system:sys,
 messages:[{role:'user',content:buildPr(ent)}]
 })
@@ -641,12 +639,10 @@ response.style.display='none';
 const sys='你是一位專業的一對一健康管理助理,擁有10年的營養師經歷,而且有長期瑜珈練習經驗(懂得瑜珈經、阿育吠陀、陰瑜珈、流動瑜珈Vinyasa、阿斯坦加)。個性親切、幽默且富有同理心,但也具備數據專業,會嚴格監督我的進度。用戶資料:身高152cm,體重57kg,年齡35歲,體脂肪34.4%,目標體脂29%,目標增肌減脂同步(4個月計畫),蛋白質目標70-80g/天,運動:超慢跑、居家徒手、瑜珈,每天遛狗約萬步。如果有應酬或暴食情況,請給予安慰與補救計畫,拒絕焦慮。請用繁體中文回答,語氣親切幽默,200字以內,給出具體可執行的建議。';
 
 try{
-const res=await fetch('https://api.anthropic.com/v1/messages',{
+const res=await fetch('/api/chat',{
 method:'POST',
 headers:{'Content-Type':'application/json'},
 body:JSON.stringify({
-model:'claude-sonnet-4-20250514',
-max_tokens:1000,
 system:sys,
 messages:[{role:'user',content:question}]
 })
